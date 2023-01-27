@@ -1,21 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:week2_demo/question.dart';
+import 'package:week2_demo/quiz.dart';
+import 'package:week2_demo/result.dart';
+import 'answer.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
+class MyApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return MyAppState();
+  }
+}
 
+class MyAppState extends State<MyApp> {
   var index = 0;
-  var questions = [
-    "what is your Favorite Color?",
-    "What is your Favorite Animal?"
+  // var questions = [
+  //   "What is your Favorite Color?",
+  //   "What is your Favorite Animal?",
+  //   "What is your Favorite Flower?"
+  // ];
+  var questionMap = [
+    {
+      'text': "What is your Fav color?",
+      'answers': ['Blue', 'Red', 'Black']
+    },
+    {
+      'text': "What is your Fav Flower?",
+      'answers': ['Rose', 'Lily', 'Sunflower', 'Daisy']
+    },
+    {
+      'text': "What is your Fav City?",
+      'answers': ['Toronto', 'Paris', 'North York', 'MyCity']
+    },
+    {
+      'text': "What is your Fav Animal?",
+      'answers': ['Lion', 'Crocodile', 'Tiger', 'Snake', 'Shark']
+    }
   ];
 
   void onButtonClicked() {
-    print('button clicked!');
-    index = index + 1;
+    setState(() {
+      //setState --> call build Function (the whole function below)
+      index = index + 1;
+    });
   }
 
   // This widget is the root of your application.
@@ -26,16 +56,10 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(title: const Text('My Quiz App')),
         // body: const MyCustomForm(),
-        body: Center(
-          child: Column(
-            children: [
-              Text(questions[index]),
-              ElevatedButton(onPressed: onButtonClicked, child: Text('Red!')),
-              TextButton(
-                  onPressed: onButtonClicked, child: const Text('Green!')),
-            ],
-          ),
-        ),
+
+        body: index < questionMap.length //start of if condition
+            ? Quiz(questionMap, index, onButtonClicked)
+            : const Result(), //this is the Else part of if condition
       ),
     );
   }
